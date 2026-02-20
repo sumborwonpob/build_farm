@@ -390,6 +390,12 @@ class BuildManager:
                     logs="Build terminated by user",
                     end_time=datetime.now()
                 )
+                # Cleanup workspace directory
+                try:
+                    if build_dir.exists():
+                        shutil.rmtree(build_dir)
+                except Exception as e:
+                    print(f"Warning: Failed to cleanup build directory: {e}")
                 return
             
             # Clone repository
@@ -402,6 +408,12 @@ class BuildManager:
                     logs=message,
                     end_time=datetime.now()
                 )
+                # Cleanup workspace directory
+                try:
+                    if build_dir.exists():
+                        shutil.rmtree(build_dir)
+                except Exception as e:
+                    print(f"Warning: Failed to cleanup build directory: {e}")
                 return
             
             # Check if termination was requested
@@ -412,6 +424,12 @@ class BuildManager:
                     logs=f"Clone: {message}\nBuild terminated by user before testing",
                     end_time=datetime.now()
                 )
+                # Cleanup workspace directory
+                try:
+                    if build_dir.exists():
+                        shutil.rmtree(build_dir)
+                except Exception as e:
+                    print(f"Warning: Failed to cleanup build directory: {e}")
                 return
             
             # Update with commit info
@@ -441,6 +459,12 @@ class BuildManager:
                     commit_message=commit_message,
                     end_time=datetime.now()
                 )
+                # Cleanup workspace directory
+                try:
+                    if build_dir.exists():
+                        shutil.rmtree(build_dir)
+                except Exception as e:
+                    print(f"Warning: Failed to cleanup build directory: {e}")
                 return
             
             # Convert test_results to JSON string if present
@@ -484,6 +508,12 @@ class BuildManager:
                 logs=f"Unexpected error: {str(e)}",
                 end_time=datetime.now()
             )
+            # Cleanup workspace directory
+            try:
+                if build_dir.exists():
+                    shutil.rmtree(build_dir)
+            except Exception as cleanup_error:
+                print(f"Warning: Failed to cleanup build directory: {cleanup_error}")
         finally:
             # Clean up termination signal
             if build_id in self._running_builds:
