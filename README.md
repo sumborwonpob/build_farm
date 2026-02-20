@@ -38,6 +38,7 @@ build_farm/
 
 - Python 3.9+
 - Git (for cloning repositories)
+- Git credentials (SSH keys) already setup
 - Docker (optional, for Docker Management page)
 
 ## Setup
