@@ -1,0 +1,8 @@
+[server]
+port = 8080
+headless = true
+runOnSave = true
+
+[client]
+showErrorDetails = true
+toolbarMode = "minimal"

@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Streamlit startup script
+# This script activates the virtual environment and runs the Streamlit application
+# Generated from template during service installation - DO NOT EDIT DIRECTLY
+
+# Project directory
+PROJECT_DIR="{{PROJECT_FRONTEND_DIR}}"
+PROJECT_ROOT="{{PROJECT_ROOT}}"
+
+# Check if venv exists
+if [ ! -d "$PROJECT_ROOT/venv" ]; then
+    echo "Error: Virtual environment not found at $PROJECT_ROOT/venv"
+    echo "Please run ./install.sh from the project root"
+    exit 1
+fi
+
+# Source the virtual environment
+if [ ! -f "$PROJECT_ROOT/venv/bin/activate" ]; then
+    echo "Error: Virtual environment activation script not found"
+    exit 1
+fi
+
+source "$PROJECT_ROOT/venv/bin/activate"
+
+# Check if streamlit is installed
+if ! command -v streamlit &> /dev/null; then
+    echo "Error: streamlit not found. Please run ./install.sh from the project root"
+    exit 1
+fi
+
+# Change to frontend directory
+cd "$PROJECT_DIR" || exit 1
+
+# Run Streamlit
+exec streamlit run main.py

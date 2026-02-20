@@ -1,0 +1,57 @@
+✅ BUILD FARM - RESTRUCTURED FOR BETTER PRACTICES
+==================================================
+
+📁 Project Structure:
+
+build_farm/
+├── README.md                    # Main documentation
+├── venv/                        # Shared Python environment (at root)
+├── backend/                     # Core backend logic
+│   ├── __init__.py             # Package initialization
+│   ├── models.py               # Data models (Repository, Build)
+│   ├── database.py             # SQLite operations
+│   ├── build_manager.py        # Build execution (uses backend/workspace)
+│   └── workspace/              # Build execution directory (auto-created)
+├── frontend/                    # Streamlit UI
+│   ├── main.py                 # Dashboard & pages
+│   ├── requirements.txt        # Dependencies (streamlit, GitPython)
+│   ├── RUN_TEST_GUIDE.md       # Test script requirements
+│   ├── run_test.sh.example     # Full example test runner
+│   ├── run_test_simple.sh.example  # Minimal test runner
+│   ├── .streamlit/             # Streamlit config
+│   ├── build_farm.db           # SQLite database (auto-created)
+│   └── __pycache__/            # Python cache
+└── service/                     # Service/systemd scripts
+
+✅ SETUP INSTRUCTIONS:
+
+  1. From project root:
+     cd build_farm
+  
+  2. Create shared venv:
+     python3 -m venv venv
+     source venv/bin/activate
+  
+  3. Install dependencies:
+     pip install -r frontend/requirements.txt
+  
+  4. Run the app:
+     cd frontend
+     streamlit run main.py
+
+✅ KEY IMPROVEMENTS:
+
+  ✓ Shared venv at root - single environment for all modules
+  ✓ Backend-focused structure - separates core logic from UI
+  ✓ Workspace in backend - where builds actually execute
+  ✓ Database in frontend - where Streamlit runs
+  ✓ Clearer separation of concerns
+  ✓ Better monorepo organization
+
+✅ PATH REFERENCES UPDATED:
+
+  build_manager.py now:
+  - Resolves workspace relative to backend/
+  - Resolves database relative to frontend/
+  - Properly handles both absolute and relative paths
+

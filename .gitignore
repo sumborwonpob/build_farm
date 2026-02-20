@@ -1,0 +1,41 @@
+# Build Farm gitignore
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv
+
+# Workspace - temporary build files
+backend/workspace/*
+!backend/workspace/placeholder.txt
+
+# Database
+*.db
+*.db-journal
+
+# Generated service files (from templates)
+service/unit/*
+!service/unit/placeholder.txt
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/

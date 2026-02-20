@@ -1,0 +1,59 @@
+#!/bin/bash
+# Simple example run_test.sh for build farm (no external dependencies)
+# This script should be placed in the root of your repository
+
+# Create test_results.json file
+cat > test_results.json << 'EOF'
+[
+EOF
+
+test_count=0
+
+# Helper function to add test result
+add_test() {
+    local name="$1"
+    local success="$2"
+    
+    if [ $test_count -gt 0 ]; then
+        echo "," >> test_results.json
+    fi
+    
+    echo "  {\"name\": \"$name\", \"success\": $success}" >> test_results.json
+    test_count=$((test_count + 1))
+}
+
+# Example: Build step
+echo "Building project..."
+if make build 2>&1; then
+    add_test "Build" true
+else
+    add_test "Build" false
+    echo "]" >> test_results.json
+    exit 1
+fi
+
+# Example: Unit tests
+echo "Running unit tests..."
+if make test 2>&1; then
+    add_test "Unit Tests" true
+else
+    add_test "Unit Tests" false
+    echo "]" >> test_results.json
+    exit 1
+fi
+
+# Example: Linting (optional - doesn't fail build)
+echo "Running linter..."
+if make lint 2>&1; then
+    add_test "Linting" true
+else
+    add_test "Linting" false
+    # Continue without failing
+fi
+
+# Close JSON array
+echo "" >> test_results.json
+echo "]" >> test_results.json
+
+echo "All tests completed!"
+exit 0

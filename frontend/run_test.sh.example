@@ -1,0 +1,58 @@
+#!/bin/bash
+# Example run_test.sh template for build farm
+# This script should be placed in the root of your repository
+
+set -e  # Exit on error
+
+# Initialize test results array
+TEST_RESULTS='[]'
+
+# Helper function to add test result
+add_test_result() {
+    local test_name="$1"
+    local success="$2"
+    
+    TEST_RESULTS=$(echo "$TEST_RESULTS" | jq --arg name "$test_name" --argjson success "$success" '. += [{"name": $name, "success": $success}]')
+}
+
+# Example: Build step
+echo "Building project..."
+if make build; then
+    add_test_result "Build" true
+else
+    add_test_result "Build" false
+    exit 1
+fi
+
+# Example: Unit tests
+echo "Running unit tests..."
+if make test-unit; then
+    add_test_result "Unit Tests" true
+else
+    add_test_result "Unit Tests" false
+    exit 1
+fi
+
+# Example: Integration tests
+echo "Running integration tests..."
+if make test-integration; then
+    add_test_result "Integration Tests" true
+else
+    add_test_result "Integration Tests" false
+    exit 1
+fi
+
+# Example: Linting
+echo "Running linter..."
+if make lint; then
+    add_test_result "Linting" true
+else
+    add_test_result "Linting" false
+    # Don't exit - continue with other tests
+fi
+
+# Save test results to JSON file
+echo "$TEST_RESULTS" > test_results.json
+
+echo "All tests completed!"
+exit 0

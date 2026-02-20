@@ -1,0 +1,18 @@
+[Unit]
+Description=Build Farm Streamlit Frontend
+After=network.target
+
+[Service]
+Type=simple
+User={{SERVICE_USER}}
+WorkingDirectory={{PROJECT_FRONTEND_DIR}}
+ExecStart={{SERVICE_SCRIPT_PATH}}/run_streamlit.sh
+Restart=on-failure
+RestartSec=10
+
+# Service hardening
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
