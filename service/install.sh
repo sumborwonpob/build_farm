@@ -70,6 +70,12 @@ sudo chmod 644 /etc/systemd/system/streamlit.service
 echo "Reloading systemd daemon..."
 sudo systemctl daemon-reload
 
+# Configure passwordless sudo for workspace cleanup
+echo "Configuring passwordless sudo for workspace cleanup..."
+WORKSPACE_PATH="$PROJECT_ROOT/backend/workspace"
+echo "$SERVICE_USER ALL=(ALL) NOPASSWD: /bin/rm -rf $WORKSPACE_PATH/*" | sudo tee /etc/sudoers.d/build_farm_cleanup > /dev/null
+sudo chmod 0440 /etc/sudoers.d/build_farm_cleanup
+
 echo ""
 echo "✅ Installation complete!"
 echo ""

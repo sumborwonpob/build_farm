@@ -115,10 +115,20 @@ class BuildManager:
                 kept_count += 1
                 continue
             
-            # Delete the folder
+            # Delete the folder using sudo (configured in sudoers for passwordless access)
             try:
-                shutil.rmtree(item)
-                deleted_count += 1
+                result = subprocess.run(
+                    ['sudo', 'rm', '-rf', str(item)],
+                    capture_output=True,
+                    text=True,
+                    timeout=60
+                )
+                if result.returncode == 0:
+                    deleted_count += 1
+                else:
+                    errors.append(f"Failed to delete {item.name}: {result.stderr}")
+            except subprocess.TimeoutExpired:
+                errors.append(f"Failed to delete {item.name}: Operation timed out")
             except Exception as e:
                 errors.append(f"Failed to delete {item.name}: {str(e)}")
         
